@@ -1,0 +1,354 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>CM Calc</title>
+    
+    <!-- PWA Manifest and Icons -->
+    <link rel="manifest" href="manifest.json">
+    <link rel="icon" type="image/png" href="assets/logo.png">
+    <link rel="apple-touch-icon" href="assets/logo.png">
+    <meta name="theme-color" content="#1a1b1c">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    
+    
+
+<link rel="stylesheet" href="style.corebiq">
+</head>
+
+<body class="w-full p-3 sm:p-4">
+    
+    <!-- Splash Screen Overlay -->
+    <div id="splash-screen" class="fixed inset-0 z-[999] flex flex-col items-center justify-center transition-opacity duration-500 ease-in-out">
+        <div class="flex flex-col items-center justify-center gap-6 animate-pulse">
+            <img src="assets/logo.png" alt="CMCalc Logo" class="w-24 h-24 sm:w-32 sm:h-32 object-contain drop-shadow-xl rounded-2xl">
+            <img src="assets/name.png" alt="CMCalc Name" class="w-48 sm:w-64 aspect-[3/1] object-contain drop-shadow-md">
+        </div>
+    </div>
+
+    <main class="w-full max-w-[400px] flex flex-col gap-3 flex-1 mx-auto h-full relative">
+        
+        <header class="flex items-center justify-between px-1 pt-1 flex-shrink-0 relative z-40">
+            <i data-lucide="menu" class="w-7 h-7 cursor-pointer cbx-inline-8c4fd04003"></i>
+            
+            <!-- Replaced Text Header with Image Header (1x3 ratio) -->
+            <div class="flex-1 flex justify-center ml-2 mr-4">
+                <img src="assets/name.png" alt="CM Calc" class="h-8 w-24 object-contain">
+            </div>
+            
+            <div class="flex items-center gap-2">
+                <button onclick="toggleTheme()" class="focus:outline-none p-2 rounded-lg border flex items-center justify-center active:scale-90 transition-transform cbx-inline-4bdec50d72">
+                    <i data-lucide="sun" id="themeToggleIcon" class="w-4 h-4 cbx-inline-73ee5f52e4"></i>
+                </button>
+                
+                <button onclick="toggleMenu(event)" class="focus:outline-none p-1 rounded-full">
+                    <i data-lucide="more-vertical" class="w-7 h-7 cursor-pointer cbx-inline-8c4fd04003"></i>
+                </button>
+            </div>
+
+            <!-- Enhanced Menu Dropdown -->
+            <div id="dropdownMenu" class="hidden absolute top-12 right-0 rounded-lg shadow-2xl border p-1 min-w-[200px] transition-colors z-50 cbx-inline-d97fae311b">
+                
+                <div id="installAppBtn" class="hidden py-3 px-4 cursor-pointer rounded text-base font-medium transition-colors hover-menu flex items-center gap-3" onclick="installApp()">
+                    <i data-lucide="download" class="w-5 h-5"></i> Install App
+                </div>
+                
+                <div class="py-3 px-4 cursor-pointer rounded text-base font-medium transition-colors hover-menu flex items-center gap-3" onclick="refreshApp()">
+                    <i data-lucide="refresh-cw" class="w-5 h-5"></i> Refresh / Update
+                </div>
+                
+                <div class="w-full border-t my-1 cbx-inline-370f16e4db"></div>
+
+                <div class="py-3 px-4 cursor-pointer rounded text-base font-medium transition-colors hover-menu flex items-center gap-3" onclick="shareApp()">
+                    <i data-lucide="share-2" class="w-5 h-5"></i> Share App
+                </div>
+                
+                <a href="https://cmfilings.com" target="_blank" class="py-3 px-4 cursor-pointer rounded text-base font-medium transition-colors hover-menu flex items-center gap-3 no-underline cbx-inline-8ecf3a1fbb">
+                    <i data-lucide="external-link" class="w-5 h-5"></i> More tools from CM
+                </a>
+                
+                <div class="py-3 px-4 cursor-pointer rounded text-base font-medium transition-colors hover-menu flex items-center gap-3" onclick="showAbout()">
+                    <i data-lucide="info" class="w-5 h-5"></i> About App
+                </div>
+
+            </div>
+        </header>
+        
+        <div class="display-box px-4 py-3 flex flex-col justify-center flex-shrink-0 min-h-[140px] h-[20vh] relative z-10">
+            <div id="result" class="w-full text-right text-[3.25rem] leading-none font-light tracking-tight truncate-custom mb-2 cbx-inline-0820c92388">
+                0
+            </div>
+            
+            <div class="w-full border-t cbx-inline-9d74485836"></div>
+            
+            <div id="expression" class="w-full text-right text-2xl font-light mt-1 min-h-[2rem] truncate-custom cbx-inline-fae452e9db">
+                &nbsp;
+            </div>
+        </div>
+
+        <div class="flex-1 min-h-0 w-full pb-2 mt-1 z-10">
+            <div class="keypad-grid">
+                <button class="calc-btn btn-mem" onclick="mem('mc')">mc</button> 
+                <button class="calc-btn btn-mem" onclick="mem('m+')">m+</button> 
+                <button class="calc-btn btn-mem" onclick="mem('m-')">m-</button> 
+                <button class="calc-btn btn-mem" onclick="mem('mr')">mr</button>
+                
+                <button class="calc-btn btn-red" onclick="calc('C')">C</button> 
+                <button class="calc-btn btn-num" onclick="calc('%')">%</button> 
+                <button class="calc-btn btn-num" onclick="calc('+/-')">+/−</button> 
+                <button class="calc-btn btn-op" onclick="calc('/')">÷</button> 
+                
+                <button class="calc-btn btn-num" onclick="calc('7')">7</button> 
+                <button class="calc-btn btn-num" onclick="calc('8')">8</button> 
+                <button class="calc-btn btn-num" onclick="calc('9')">9</button> 
+                <button class="calc-btn btn-op" onclick="calc('*')">×</button> 
+                
+                <button class="calc-btn btn-num" onclick="calc('4')">4</button> 
+                <button class="calc-btn btn-num" onclick="calc('5')">5</button> 
+                <button class="calc-btn btn-num" onclick="calc('6')">6</button> 
+                <button class="calc-btn btn-op" onclick="calc('-')">−</button> 
+                
+                <button class="calc-btn btn-num" onclick="calc('1')">1</button> 
+                <button class="calc-btn btn-num" onclick="calc('2')">2</button> 
+                <button class="calc-btn btn-num" onclick="calc('3')">3</button> 
+                <button class="calc-btn btn-op" onclick="calc('+')">+</button> 
+                
+                <button class="calc-btn btn-num" onclick="calc('0')">0</button> 
+                <button class="calc-btn btn-num" onclick="calc('.')">.</button> 
+                
+                <button class="calc-btn btn-num flex justify-center items-center" onclick="calc('back')">
+                    <svg class="w-8 h-8 opacity-80" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M22 3H7C6.3 3 5.7 3.4 5.4 4L0 12L5.4 20C5.7 20.6 6.3 21 7 21H22C23.1 21 24 20.1 24 19V5C24 3.9 23.1 3 22 3ZM18.3 16.3L15.5 13.5L12.7 16.3L11.3 14.9L14.1 12.1L11.3 9.3L12.7 7.9L15.5 10.7L18.3 7.9L19.7 9.3L16.9 12.1L19.7 14.9L18.3 16.3Z"/>
+                    </svg>
+                </button> 
+                
+                <button class="calc-btn btn-orange font-bold" onclick="calc('=')">=</button>
+            </div>
+        </div>
+    </main>
+
+    <div id="aboutModal" class="hidden fixed inset-0 z-[100] flex items-center justify-center bg-black/60 backdrop-blur-sm px-4 opacity-0 transition-opacity duration-300">
+        <div class="rounded-xl shadow-2xl p-6 w-full max-w-[320px] text-center transform scale-95 transition-transform duration-300 cbx-inline-c745c9dd20">
+            <div class="flex justify-center mb-4">
+                <img src="assets/name.png" alt="CM Calc" class="h-10 object-contain">
+            </div>
+            <p class="text-sm mb-5 cbx-inline-fae452e9db">Classic. Simple. Powerful.</p>
+            <p class="text-base font-medium mb-6 cbx-inline-8c4fd04003">Version 1.0</p>
+            <button onclick="closeAbout()" class="w-full py-2.5 rounded-lg font-bold transition-transform active:scale-95 shadow-md cbx-inline-9ea07dbb44">Close</button>
+        </div>
+    </div>
+
+    <script>
+        // --- Service Worker Registration & App Install Logic ---
+        let deferredPrompt;
+        
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('sw.js')
+                    .then(registration => console.log('ServiceWorker registered'))
+                    .catch(error => console.log('ServiceWorker registration failed:', error));
+            });
+        }
+
+        // Show install button if app is installable
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            document.getElementById('installAppBtn').classList.remove('hidden');
+        });
+
+        function installApp() {
+            dropdownMenu.classList.add('hidden');
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                deferredPrompt.userChoice.then((choiceResult) => {
+                    if (choiceResult.outcome === 'accepted') {
+                        document.getElementById('installAppBtn').classList.add('hidden');
+                    }
+                    deferredPrompt = null;
+                });
+            }
+        }
+
+        function refreshApp() {
+            // Unregister service workers and refresh page to download updates
+            if ('serviceWorker' in navigator) {
+                navigator.serviceWorker.getRegistrations().then(function(registrations) {
+                    for(let registration of registrations) {
+                        registration.update();
+                    }
+                });
+            }
+            // Force reload skipping cache
+            window.location.reload(true);
+        }
+
+        // --- Share App Logic ---
+        function shareApp() {
+            dropdownMenu.classList.add('hidden');
+            if (navigator.share) {
+                navigator.share({
+                    title: 'CMCalc',
+                    text: 'Check out CMCalc - A Classic, Simple, and Powerful Calculator App!',
+                    url: window.location.href
+                }).catch(console.error);
+            } else {
+                alert('Native sharing is not supported on this browser. Copy the URL to share!');
+            }
+        }
+
+        // --- Splash Screen Logic ---
+        window.addEventListener('load', () => {
+            const splash = document.getElementById('splash-screen');
+            setTimeout(() => {
+                splash.classList.add('opacity-0');
+                setTimeout(() => splash.remove(), 500);
+            }, 1200);
+        });
+
+        // Initialize Icons
+        lucide.createIcons();
+
+        // Menu Dropdown Logic
+        const dropdownMenu = document.getElementById('dropdownMenu');
+        function toggleMenu(event) {
+            event.stopPropagation();
+            dropdownMenu.classList.toggle('hidden');
+        }
+        
+        document.addEventListener('click', (event) => {
+            if (!dropdownMenu.contains(event.target) && !dropdownMenu.classList.contains('hidden')) {
+                dropdownMenu.classList.add('hidden');
+            }
+        });
+
+        // About Modal Logic
+        const aboutModal = document.getElementById('aboutModal');
+        const modalContent = aboutModal.querySelector('div');
+        
+        function showAbout() {
+            dropdownMenu.classList.add('hidden');
+            aboutModal.classList.remove('hidden');
+            setTimeout(() => {
+                aboutModal.classList.remove('opacity-0');
+                modalContent.classList.remove('scale-95');
+            }, 10);
+        }
+
+        function closeAbout() {
+            aboutModal.classList.add('opacity-0');
+            modalContent.classList.add('scale-95');
+            setTimeout(() => {
+                aboutModal.classList.add('hidden');
+            }, 300);
+        }
+
+        // Theme Toggle Logic
+        let isDark = true;
+        function toggleTheme() {
+            isDark = !isDark;
+            const theme = isDark ? 'dark' : 'light';
+            document.documentElement.setAttribute('data-theme', theme);
+            
+            const toggleIcon = document.getElementById('themeToggleIcon');
+            toggleIcon.setAttribute('data-lucide', isDark ? 'sun' : 'moon');
+            lucide.createIcons();
+        }
+
+        // Calculator Logic
+        let current = '0', prev = '', op = '', reset = false, memory = 0;
+        const resultEl = document.getElementById('result');
+        const exprEl = document.getElementById('expression');
+
+        function fmt(n) {
+            let num = parseFloat(n);
+            if (isNaN(num)) return '0';
+            return num.toLocaleString('en-US', { maximumFractionDigits: 8 });
+        }
+
+        function updateDisplay() {
+            if (current.endsWith('.')) {
+                resultEl.textContent = fmt(current.slice(0, -1)) + '.';
+            } else if (current.includes('.') && current.endsWith('0')) {
+                resultEl.textContent = current; 
+            } else {
+                resultEl.textContent = fmt(current);
+            }
+        }
+
+        function calc(key) {
+            if (key === 'C') { 
+                current = '0'; prev = ''; op = ''; reset = false; exprEl.innerHTML = '&nbsp;'; 
+            }
+            else if (key === '+/-') { 
+                current = String(-parseFloat(current || 0)); 
+            }
+            else if (key === '%') { 
+                current = String(parseFloat(current || 0) / 100); 
+            }
+            else if (key === 'back') {
+                if (current.length > 1) {
+                    current = current.slice(0, -1);
+                    if (current === '-') current = '0';
+                }
+                else current = '0';
+            }
+            else if (['+','-','*','/'].includes(key)) {
+                if (op && prev && !reset) {
+                    current = String(eval(prev + op + current));
+                }
+                prev = current; op = key;
+                let sym = {'+':'+','-':'−','*':'×','/':'÷'}[key];
+                exprEl.textContent = fmt(prev) + ' ' + sym;
+                reset = true;
+            }
+            else if (key === '=') {
+                if (op && prev) {
+                    let sym = {'+':'+','-':'−','*':'×','/':'÷'}[op];
+                    exprEl.textContent = fmt(prev) + ' ' + sym + ' ' + fmt(current);
+                    
+                    let safePrev = parseFloat(prev);
+                    let safeCurr = parseFloat(current);
+                    let evalResult = 0;
+                    
+                    if(op === '+') evalResult = safePrev + safeCurr;
+                    if(op === '-') evalResult = safePrev - safeCurr;
+                    if(op === '*') evalResult = safePrev * safeCurr;
+                    if(op === '/') evalResult = safePrev / safeCurr;
+                    
+                    current = String(evalResult);
+                    op = ''; prev = '';
+                }
+            } else {
+                if (reset) { current = ''; reset = false; }
+                if (key === '.' && current.includes('.')) return;
+                current = (current === '0' && key !== '.') ? key : current + key;
+            }
+            updateDisplay();
+        }
+
+        function mem(key) {
+            if (key === 'mc') {
+                memory = 0;
+            }
+            else if (key === 'm+') {
+                memory += parseFloat(current) || 0;
+                reset = true;
+            }
+            else if (key === 'm-') {
+                memory -= parseFloat(current) || 0;
+                reset = true;
+            }
+            else if (key === 'mr') { 
+                current = String(memory); 
+                reset = false; 
+                updateDisplay(); 
+            }
+        }
+    </script>
+</body>
+</html>

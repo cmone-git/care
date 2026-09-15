@@ -1,0 +1,101 @@
+<link rel="stylesheet" href="style.corebiq">
+
+
+<header class="top-header cbx-inline-d2cea9f47a">
+    
+    <div class="cbx-inline-c9a7335caf">
+        <button class="icon-action toggle-sidebar cbx-inline-2852ded447" onclick="window.toggleMenu()">
+            <span class="material-symbols-rounded cbx-inline-264028a917">menu</span>
+        </button>
+
+        <div class="cbx-inline-eba923c40f">
+            <div class="coral-pair metric-round desktop-only">
+                <svg width="50" height="50" class="clock-svg" viewBox="0 0 50 50">
+                    <circle cx="25" cy="25" r="21" class="bg-track"></circle>
+                    <circle cx="25" cy="25" r="21" class="progress-arc" id="dd-arc" stroke-dasharray="131.95" stroke-dashoffset="131.95"></circle>
+                </svg>
+                <div class="center-text">
+                    <span class="main-val" id="dd-val">--</span>
+                    <span class="sub-label" id="dd-context">DD</span>
+                </div>
+            </div>
+            <div class="coral-pair metric-round desktop-only">
+                <svg width="50" height="50" class="clock-svg" viewBox="0 0 50 50">
+                    <circle cx="25" cy="25" r="21" class="bg-track"></circle>
+                    <circle cx="25" cy="25" r="21" class="progress-arc" id="mm-arc" stroke-dasharray="131.95" stroke-dashoffset="131.95"></circle>
+                </svg>
+                <div class="center-text">
+                    <span class="main-val" id="mm-val">--</span>
+                    <span class="sub-label" id="mm-context">MM</span>
+                </div>
+            </div>
+            <div class="yellow-pair metric-round">
+                <svg width="50" height="50" class="clock-svg" viewBox="0 0 50 50">
+                    <circle cx="25" cy="25" r="21" class="bg-track"></circle>
+                    <circle cx="25" cy="25" r="21" class="progress-arc" id="hh-arc" stroke-dasharray="131.95" stroke-dashoffset="131.95"></circle>
+                </svg>
+                <div class="center-text">
+                    <span class="main-val" id="hh-val">--</span>
+                    <span class="sub-label" id="hh-context">HH</span>
+                </div>
+            </div>
+            <div class="yellow-pair metric-round">
+                <svg width="50" height="50" class="clock-svg" viewBox="0 0 50 50">
+                    <circle cx="25" cy="25" r="21" class="bg-track"></circle>
+                    <circle cx="25" cy="25" r="21" class="progress-arc" id="min-arc" stroke-dasharray="131.95" stroke-dashoffset="131.95"></circle>
+                </svg>
+                <div class="center-text">
+                    <span class="main-val" id="min-val">--</span>
+                    <span class="sub-label">MIN</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="header-actions cbx-inline-2337c8f172">
+        <div class="search-container desktop-only cbx-inline-47b787520a">
+            <span class="material-symbols-rounded cbx-inline-4cfe0f6417">search</span>
+            <input type="text" class="search-input cbx-inline-8c86b4f218" placeholder="Search...">
+        </div>
+        <div class="notification-wrapper cbx-inline-d2d40e256c">
+            <span class="material-symbols-rounded cbx-inline-33bc0ac13a">notifications</span>
+            <span class="cbx-inline-f02a5f9f57"></span>
+        </div>
+        <div class="profile-menu cbx-inline-def3d02b1f">
+            <div class="cbx-inline-ee6fd97755" id="header-profile-icon">A</div>
+            
+            <button class="logout-btn" onclick="window.handleLogout()">Logout</button>
+        </div>
+    </div>
+</header>
+
+<script>
+    // 1. Automatically update the profile icon letter based on who logged in
+    (function() {
+        if (window.currentUser) {
+            const profileIcon = document.getElementById('header-profile-icon');
+            if (window.currentUser.role === 'admin') {
+                profileIcon.innerText = 'A'; // Admin
+            } else {
+                // If branch is "Branch 1", this extracts the "1" to show in the circle
+                let branchNumber = window.currentUser.branch.replace('Branch ', '');
+                profileIcon.innerText = branchNumber.charAt(0); 
+            }
+        }
+    })();
+
+    // 2. Add the global logout function
+    if (!window.handleLogout) {
+        window.handleLogout = function() {
+            // Clear current user
+            window.currentUser = null;
+            
+            // Hide the app and show the login screen again
+            document.getElementById('app-container').style.display = 'none';
+            document.getElementById('login-container').style.display = 'flex';
+            
+            // Clear the password field for security
+            document.getElementById('loginPassword').value = '';
+        };
+    }
+</script>

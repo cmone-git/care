@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>App Updates</title>
+
+<link rel="stylesheet" href="style.corebiq">
+</head>
+<body>
+
+<div class="module-container" id="updates-module">
+    
+    
+
+    <div class="cbx-inline-0df3644cab">
+        <div>
+            <div class="section-title">
+                <span class="material-symbols-rounded cbx-inline-03fcaf46a1">campaign</span>
+                App Updates & Notifications
+            </div>
+            <div class="section-subtitle">Stay up-to-date with the latest features, improvements, and fixes in CM Dashboard.</div>
+        </div>
+        <button class="btn-outline cbx-inline-30d59c8a6f" onclick="window.markUpdatesRead()">
+            <span class="material-symbols-rounded cbx-inline-b87efa5bc3">done_all</span> Mark all as read
+        </button>
+    </div>
+
+    <div class="timeline">
+        
+        <!-- UPDATE 1: Latest Update -->
+        <div class="timeline-item">
+            <div class="timeline-dot new"></div>
+            <div class="update-card">
+                <div class="update-header">
+                    <div class="update-version">
+                        Version 1.2.0
+                        <span class="upd-badge upd-feature">New Features</span>
+                    </div>
+                    <div class="update-date">Aug 27, 2026</div>
+                </div>
+                <div class="update-body">
+                    We've rolled out major additions to help streamline clinic payments and data management!
+                    <ul>
+                        <li><strong>UPI QR Generator:</strong> Instantly generate and share branded digital payment receipts with patients via WhatsApp. Pending dues are calculated automatically.</li>
+                        <li><strong>Export & Backup Module:</strong> Download your filtered module data (Patients, Appointments, Transactions) directly to CSV/Excel format.</li>
+                        <li><strong>Admin Full Backup:</strong> Administrators can now securely download a complete JSON snapshot of the entire database.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- UPDATE 2 -->
+        <div class="timeline-item">
+            <div class="timeline-dot"></div>
+            <div class="update-card">
+                <div class="update-header">
+                    <div class="update-version">
+                        Version 1.1.5
+                        <span class="upd-badge upd-improvement">Improvement</span>
+                    </div>
+                    <div class="update-date">Aug 15, 2026</div>
+                </div>
+                <div class="update-body">
+                    Quality of life improvements for receptionists and staff members.
+                    <ul>
+                        <li><strong>Searchable Dropdowns:</strong> The Patient and Therapist selection menus are now fully searchable. Type a name or mobile number to instantly find and auto-fill records.</li>
+                        <li><strong>Sticky Sidebar Header:</strong> The clinic logo and close button now remain sticky at the top of the mobile menu for easier navigation.</li>
+                        <li>UI adjustments for smoother mobile scrolling on data tables.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- UPDATE 3 -->
+        <div class="timeline-item">
+            <div class="timeline-dot fix"></div>
+            <div class="update-card">
+                <div class="update-header">
+                    <div class="update-version">
+                        Version 1.0.2
+                        <span class="upd-badge upd-fix">Security Fix</span>
+                    </div>
+                    <div class="update-date">Jul 30, 2026</div>
+                </div>
+                <div class="update-body">
+                    Backend security and optimization.
+                    <ul>
+                        <li><strong>Firestore Query Optimization:</strong> Applied strict branch-filtering to all dynamic data loaders to comply with Firebase security rules. Staff members can now only read and interact with data strictly assigned to their branch.</li>
+                        <li>Fixed a visual bug where the dashboard metrics occasionally loaded empty on first login.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- UPDATE 4: Initial Launch -->
+        <div class="timeline-item">
+            <div class="timeline-dot"></div>
+            <div class="update-card">
+                <div class="update-header">
+                    <div class="update-version">
+                        Version 1.0.0
+                        <span class="upd-badge upd-feature">Launch</span>
+                    </div>
+                    <div class="update-date">Jul 01, 2026</div>
+                </div>
+                <div class="update-body">
+                    Welcome to the official launch of the Stra Care Clinic Management Dashboard!
+                    <ul>
+                        <li>Complete CRM and ERP integration for managing Patients, Appointments, and Therapists.</li>
+                        <li>Automated Financials tracking (Total Fee, Advance, Balance, Previous OP Dues).</li>
+                        <li>Live Dashboard with dynamic charts, calendar integrations, and daily attendance overviews.</li>
+                        <li>Invoice generation, Letterheads, and Digital Seal capabilities.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        // Optional: Simple function for the "Mark all as read" button
+        window.markUpdatesRead = function() {
+            localStorage.setItem('updatesViewed', 'true');
+            
+            // If the bell still has the animation/badge on the header, clear it
+            const badge = document.getElementById('notif-badge');
+            const bellIcon = document.getElementById('bell-icon');
+            
+            if(badge) badge.style.display = 'none';
+            if(bellIcon) bellIcon.classList.remove('bell-anim');
+            
+            alert("All notifications marked as read.");
+        }
+    </script>
+</div>
+
+</body>
+</html>

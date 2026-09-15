@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>CMBooks - Digital Seals</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,1,0"/>
+
+<link rel="stylesheet" href="style.corebiq">
+</head>
+<body>
+
+<div class="module-container" id="seal-module">
+    
+    
+
+    <div class="section-title no-print">
+        <h2 class="cbx-inline-ff227d0632">Digital Seals</h2>
+    </div>
+
+    <div class="form-card no-print">
+        <h4 class="cbx-inline-6d9eef1a49">Select Seal Template</h4>
+        
+        <div class="seal-selector-group">
+            <label class="seal-option active" id="opt-company" onclick="window.selectSeal('company')">
+                <input type="radio" name="sealType" checked>
+                <div class="seal-option-details">
+                    <span class="seal-option-title">Company Seal</span>
+                    <span class="seal-option-desc">STRA CARE / Managing Partner</span>
+                </div>
+            </label>
+
+            <label class="seal-option" id="opt-doctor" onclick="window.selectSeal('doctor')">
+                <input type="radio" name="sealType">
+                <div class="seal-option-details">
+                    <span class="seal-option-title">Doctor's Seal</span>
+                    <span class="seal-option-desc">Dr. Thejaswi M.K (CEO)</span>
+                </div>
+            </label>
+        </div>
+
+        <div class="cbx-inline-13cbe03b9a">
+            <button type="button" class="btn-outline" onclick="window.print()">
+                <span class="material-symbols-rounded">print</span> Print Active Seal
+            </button>
+        </div>
+    </div>
+
+    <!-- Canvas Area for Display/Printing -->
+    <div class="canvas-area">
+        
+        <!-- SEAL 1: COMPANY -->
+        <div class="seal-box-company cbx-inline-048b9a2b26" id="seal-company">
+            <div class="seal-name">FOR STRA CARE</div>
+            <div class="signature-line"></div>
+            <div class="seal-role">Managing Partner</div>
+        </div>
+
+        <!-- SEAL 2: DOCTOR -->
+        <div class="seal-box-doctor" id="seal-doctor">
+            <div class="doc-name">Dr. THEJASWI M.K (PT)</div>
+            <div class="doc-qual">BPT, MPT (Ortho)</div>
+            <div class="doc-reg">MIAP Reg No. L.43616</div>
+            <div class="doc-role">CEO, STRA CARE</div>
+        </div>
+
+    </div>
+
+    <script>
+        window.selectSeal = function(sealType) {
+            // Reset Options UI
+            document.getElementById('opt-company').classList.remove('active');
+            document.getElementById('opt-doctor').classList.remove('active');
+            
+            // Hide all seals
+            document.getElementById('seal-company').style.display = 'none';
+            document.getElementById('seal-doctor').style.display = 'none';
+
+            // Activate Selected
+            if(sealType === 'company') {
+                document.getElementById('opt-company').classList.add('active');
+                document.getElementById('opt-company').querySelector('input').checked = true;
+                document.getElementById('seal-company').style.display = 'block';
+            } else if (sealType === 'doctor') {
+                document.getElementById('opt-doctor').classList.add('active');
+                document.getElementById('opt-doctor').querySelector('input').checked = true;
+                document.getElementById('seal-doctor').style.display = 'flex';
+            }
+        }
+    </script>
+
+</div>
+</body>
+</html>

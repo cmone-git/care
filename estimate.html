@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>CMBooks - Estimate Generator</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,1,0"/>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
+<link rel="stylesheet" href="style.corebiq">
+</head>
+<body>
+
+<div class="module-container" id="estimate-module">
+    
+    
+
+    <div class="section-title no-print">
+        <h2 class="cbx-inline-ff227d0632">Estimate Generator</h2>
+    </div>
+
+    <div class="form-card no-print">
+        <h4 class="cbx-inline-6d9eef1a49">Estimate Details</h4>
+        
+        <div class="input-group three-cols">
+            <div>
+                <label class="form-label">Patient Name *</label>
+                <input type="text" id="estName" class="form-input" placeholder="Full Name" oninput="window.syncPreview()">
+            </div>
+            <div>
+                <label class="form-label">Patient Mobile *</label>
+                <input type="tel" id="estMobile" class="form-input" placeholder="10-digit number" maxlength="10" oninput="window.syncPreview()">
+            </div>
+            <div>
+                <label class="form-label">Date *</label>
+                <input type="date" id="estDate" class="form-input" onchange="window.syncPreview()">
+            </div>
+        </div>
+
+        <div class="input-group three-cols">
+            <div>
+                <label class="form-label">Branch *</label>
+                <select id="estBranch" class="form-input" onchange="window.syncPreview()">
+                    <option value="">Loading Branches...</option>
+                </select>
+            </div>
+            <div class="cbx-inline-1f61f29863">
+                <label class="form-label">Description of Service</label>
+                <input type="text" id="estDesc" class="form-input" placeholder="e.g. Consultation & Therapy Service" value="Consultation & Therapy Service" oninput="window.syncPreview()">
+            </div>
+        </div>
+
+        <div class="input-group three-cols cbx-inline-35bbb2cdbc">
+            <div>
+                <label class="form-label">Total Fee (₹) *</label>
+                <input type="number" id="estFee" class="form-input" placeholder="0.00" oninput="window.syncPreview()">
+            </div>
+            <div>
+                <label class="form-label">Advance Paid (₹)</label>
+                <input type="number" id="estAdvance" class="form-input" placeholder="0.00" oninput="window.syncPreview()">
+            </div>
+            <div>
+                <label class="form-label">Balance Pending (₹)</label>
+                <input type="number" id="estBalance" class="form-input cbx-inline-94f2cf51a2" placeholder="0.00" readonly>
+            </div>
+        </div>
+
+        <div class="cbx-inline-ef7a9dfbd9">
+            <button type="button" class="btn-primary" id="saveEstBtn" onclick="window.saveEstimate()">Save to Database & Export</button>
+        </div>
+
+        <div class="action-row" id="actionButtonsRow">
+            <button type="button" class="btn-action" onclick="window.printEstimate()">
+                <span class="material-symbols-rounded">print</span> Print
+            </button>
+            <button type="button" class="btn-action" onclick="window.downloadJPEG()">
+                <span class="material-symbols-rounded">image</span> Save JPG
+            </button>
+            <button type="button" class="btn-action cbx-inline-25e0707b5f" onclick="window.sendEstimateWA()">
+                <span class="material-symbols-rounded">chat</span> WhatsApp
+            </button>
+        </div>
+    </div>
+
+    <div class="a4-wrapper no-print">
+        <div class="a4-paper" id="printable-estimate">
+            <div class="a4-header">
+                <div class="a4-logo-area">
+                    <!-- REPLACED TEXT WITH COMPANY LOGO -->
+                    <img src="assets/name.png" alt="STRA CARE">
+                </div>
+                <div class="a4-company-info">
+                    <strong>+91 97449 02555 | +91 90612 07871</strong><br>
+                    info@stracares.in | www.stracares.in<br>
+                    Branches: Mahe | Chokli | Panoor | Koothuparamba
+                </div>
+            </div>
+            
+            <div class="a4-bill-to">
+                <div>
+                    <h3>Estimated For:</h3>
+                    <div class="cbx-inline-ace1c28b83" id="prevName">---</div>
+                    <div class="cbx-inline-f14e3597f1">Mobile: +91 <span id="prevMobile">----------</span></div>
+                </div>
+                <div class="cbx-inline-13cbe03b9a">
+                    <h3>Estimate Details</h3>
+                    <div class="cbx-inline-3eaa7b5ced"><strong>Date:</strong> <span id="prevDate">YYYY-MM-DD</span></div>
+                    <div class="cbx-inline-f14e3597f1"><strong>Branch:</strong> <span id="prevBranch">---</span></div>
+                </div>
+            </div>
+
+            <table class="a4-table">
+                <tr>
+                    <th>Description of Services</th>
+                    <th class="cbx-inline-13cbe03b9a">Amount (₹)</th>
+                </tr>
+                <tr>
+                    <td id="prevDesc">Consultation & Therapy Service</td>
+                    <td class="cbx-inline-13cbe03b9a" id="prevFee">₹0.00</td>
+                </tr>
+            </table>
+
+            <div class="a4-totals">
+                <div class="a4-totals-row"><span>Advance Paid:</span> <span id="prevAdvance">₹0.00</span></div>
+                <div class="a4-totals-row balance"><span>Balance Due:</span> <span id="prevBalance">₹0.00</span></div>
+            </div>
+
+            <div class="a4-bank-details">
+                <h4>Bank Details for Payment Remittance</h4>
+                <strong>Account Name:</strong> STRA CARE <br>
+                <strong>Account No:</strong> 50200120597389 | <strong>IFSC:</strong> HDFC0000465<br>
+                <strong>UPI ID:</strong> 9744902555@hdfc
+            </div>
+
+            <div class="a4-footer-text">
+                Generated by https://bizze.cmfilings.com
+            </div>
+        </div>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
+        import { getFirestore, collection, addDoc, getDocs } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyAcO1L2Za7dzILxylmMkRTSx0FBVu_EEoM",
+            authDomain: "cmf001stra.firebaseapp.com",
+            projectId: "cmf001stra",
+            storageBucket: "cmf001stra.firebasestorage.app",
+            messagingSenderId: "763958641347",
+            appId: "1:763958641347:web:316876bc2340b26bd21876",
+            measurementId: "G-770FBR88LJ"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        // FIXED DATE BUG
+        document.getElementById("estDate").value = new Date().toISOString().split('T')[0];
+
+        // --- 0. SAFE DYNAMIC BRANCH LOADER (WITH RBAC) ---
+        window.loadBranchesForEst = async function() {
+            const select = document.getElementById('estBranch');
+            
+            // SECURITY: If standard user, lock the dropdown to their branch only
+            if (window.currentUser && window.currentUser.role !== 'admin') {
+                const userBranch = window.currentUser.branch;
+                select.innerHTML = `<option value="${userBranch}">${userBranch}</option>`;
+                select.style.pointerEvents = 'none';
+                select.style.background = 'var(--grey-med)';
+                window.syncPreview();
+                return; 
+            }
+
+            try {
+                const snap = await getDocs(collection(db, "branches"));
+                let branchList = [];
+                snap.forEach(doc => {
+                    const bName = doc.data().name;
+                    if(bName) branchList.push(bName);
+                });
+                branchList.sort();
+
+                let bHtml = '<option value="">Select Branch</option>';
+                branchList.forEach(bName => {
+                    bHtml += `<option value="${bName}">${bName}</option>`;
+                });
+                
+                select.innerHTML = bHtml;
+                window.syncPreview();
+            } catch(e) {
+                console.error("Error loading branches", e);
+                select.innerHTML = '<option value="">Select Branch</option>';
+            }
+        };
+        window.loadBranchesForEst();
+
+        // --- 1. LIVE SYNC ENGINE ---
+        window.syncPreview = function() {
+            document.getElementById('prevName').innerText = document.getElementById('estName').value || '---';
+            document.getElementById('prevMobile').innerText = document.getElementById('estMobile').value || '----------';
+            document.getElementById('prevDate').innerText = document.getElementById('estDate').value || 'YYYY-MM-DD';
+            document.getElementById('prevBranch').innerText = document.getElementById('estBranch').value || '---';
+            document.getElementById('prevDesc').innerText = document.getElementById('estDesc').value || 'Consultation & Therapy Service';
+            
+            const fee = parseFloat(document.getElementById('estFee').value) || 0;
+            const advance = parseFloat(document.getElementById('estAdvance').value) || 0;
+            const balance = fee - advance;
+            
+            document.getElementById('estBalance').value = balance.toFixed(2);
+            
+            document.getElementById('prevFee').innerText = '₹' + fee.toFixed(2);
+            document.getElementById('prevAdvance').innerText = '₹' + advance.toFixed(2);
+            document.getElementById('prevBalance').innerText = '₹' + balance.toFixed(2);
+        }
+
+        window.syncPreview();
+
+        // --- 2. SAVE TO FIREBASE WORKFLOW ---
+        window.saveEstimate = async function() {
+            const btn = document.getElementById('saveEstBtn');
+            const name = document.getElementById('estName').value;
+            const mobile = document.getElementById('estMobile').value;
+            const date = document.getElementById('estDate').value;
+            const fee = document.getElementById('estFee').value;
+            const branch = document.getElementById('estBranch').value;
+
+            if(!name || !mobile || !fee || !branch) {
+                return alert("Patient Name, Mobile, Branch, and Fee are required before saving!");
+            }
+
+            btn.innerText = "Saving to Database...";
+            btn.disabled = true;
+
+            try {
+                await addDoc(collection(db, "estimates"), {
+                    name: name,
+                    mobile: mobile,
+                    date: date,
+                    branch: branch,
+                    description: document.getElementById('estDesc').value,
+                    fee: parseFloat(fee) || 0,
+                    advance: parseFloat(document.getElementById('estAdvance').value) || 0,
+                    balance: parseFloat(document.getElementById('estBalance').value) || 0,
+                    createdAt: new Date()
+                });
+
+                alert("Estimate Saved Successfully!");
+                btn.style.display = "none";
+                document.getElementById('actionButtonsRow').style.display = "flex";
+
+            } catch(e) {
+                console.error("Firebase Error:", e);
+                alert("Failed to save. Check your connection or database rules.");
+                btn.innerText = "Save to Database & Export";
+                btn.disabled = false;
+            }
+        }
+
+        // --- 3. EXPORT ACTIONS ---
+        window.printEstimate = function() {
+            window.print(); 
+        }
+
+        window.downloadJPEG = function() {
+            const element = document.getElementById('printable-estimate');
+            const name = document.getElementById('estName').value || 'Patient';
+            
+            html2canvas(element, { scale: 2, useCORS: true }).then(canvas => {
+                const link = document.createElement('a');
+                link.download = `STRA_CARE_Estimate_${name}.jpg`;
+                link.href = canvas.toDataURL('image/jpeg', 0.9);
+                link.click();
+            }).catch(err => {
+                console.error("JPEG Render Error:", err);
+                alert("Failed to generate JPEG. Try printing as PDF instead.");
+            });
+        }
+
+        window.sendEstimateWA = function() {
+            const mobile = document.getElementById('estMobile').value;
+            const name = document.getElementById('estName').value;
+            const fee = document.getElementById('estFee').value || 0;
+            const advance = document.getElementById('estAdvance').value || 0;
+            const balance = document.getElementById('estBalance').value || 0;
+            
+            const waText = encodeURIComponent(`Hello ${name}, here is your service estimate from STRA CARE. Total Fee: ₹${fee}, Advance: ₹${advance}, Balance Pending: ₹${balance}. Let us know if you have any questions!`);
+            window.open(`https://wa.me/91${mobile}?text=${waText}`, '_blank');
+        }
+
+    </script>
+
+</div>
+</body>
+</html>
